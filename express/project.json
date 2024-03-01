@@ -1,0 +1,46 @@
+{
+  "name": "express",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "express/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/express",
+        "main": "express/src/main.ts",
+        "tsConfig": "express/tsconfig.app.json",
+        "assets": ["express/src/assets"],
+        "isolatedConfig": false,
+        "generatePackageJson": true
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "externalDependencies": "none"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "express:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "express:build:development"
+        },
+        "production": {
+          "buildTarget": "express:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}
